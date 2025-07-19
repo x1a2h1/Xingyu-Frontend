@@ -1,9 +1,9 @@
-import { useRequest, useUpdateEffect } from "ahooks";
-import { Form, Input, Modal, Select, message } from "antd";
-import React, { useEffect, useState } from "react";
+import { useRequest, useUpdateEffect } from 'ahooks';
+import { Form, Input, Modal, Select, message } from 'antd';
+import React, { useEffect, useState } from 'react';
 
-import { fetchGetRoleList } from "@/service/api/role";
-import { fetchPostUser, fetchPutUser } from "@/service/api/user";
+import { fetchGetRoleList } from '@/service/api/role';
+import { fetchPostUser, fetchPutUser } from '@/service/api/user';
 
 interface UserFormModalProps {
   readonly editingUser: Api.User.Info | null;
@@ -12,23 +12,18 @@ interface UserFormModalProps {
   readonly open: boolean;
 }
 
-export const UserFormModal: React.FC<UserFormModalProps> = ({
-  editingUser,
-  onCancel,
-  onSuccess,
-  open,
-}) => {
+export const UserFormModal: React.FC<UserFormModalProps> = ({ editingUser, onCancel, onSuccess, open }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const isEdit = Boolean(editingUser);
-  const title = isEdit ? "编辑用户" : "新增用户";
+  const title = isEdit ? '编辑用户' : '新增用户';
 
   const {
     data: response,
     loading: roleLoading,
-    run: getRoleList,
+    run: getRoleList
   } = useRequest(fetchGetRoleList, {
-    manual: true,
+    manual: true
   });
 
   // 从响应中提取数据
@@ -40,14 +35,14 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
 
     return roleList
       .map((role: any) => {
-        if (typeof role === "object" && role !== null) {
+        if (typeof role === 'object' && role !== null) {
           return Number(role.id || role.roleId || role.value);
-        } else if (typeof role === "string" || typeof role === "number") {
+        } else if (typeof role === 'string' || typeof role === 'number') {
           return Number(role);
         }
         return 0;
       })
-      .filter((id) => id > 0);
+      .filter(id => id > 0);
   };
 
   const init = async () => {
@@ -69,13 +64,13 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
         const roleIds = extractRoleIds(editingUser.role_list);
 
         const formValues = {
-          account: editingUser.account || "",
-          cellphone: editingUser.cellphone || "",
-          email: editingUser.email || "",
-          nickname: editingUser.nickname || "",
-          password: "",
-          remark: editingUser.remark || "",
-          role_ids: roleIds,
+          account: editingUser.account || '',
+          cellphone: editingUser.cellphone || '',
+          email: editingUser.email || '',
+          nickname: editingUser.nickname || '',
+          password: '',
+          remark: editingUser.remark || '',
+          role_ids: roleIds
         };
 
         form.setFieldsValue(formValues);
@@ -98,7 +93,7 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
     if (open && isEdit && editingUser && !roleLoading && roleData?.list) {
       const roleIds = extractRoleIds(editingUser.role_list);
       form.setFieldsValue({
-        role_ids: roleIds,
+        role_ids: roleIds
       });
     }
   }, [open, isEdit, editingUser, roleLoading, roleData, form]);
@@ -110,23 +105,21 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
 
       const formattedValues = {
         ...values,
-        role_ids: values.role_ids?.map((id: any) => Number(id)) || [],
+        role_ids: values.role_ids?.map((id: any) => Number(id)) || []
       };
 
       if (isEdit && editingUser) {
         await fetchPutUser(editingUser.id.toString(), formattedValues);
-        message.success("编辑用户成功");
+        message.success('编辑用户成功');
       } else {
         await fetchPostUser(formattedValues);
-        message.success("新增用户成功");
+        message.success('新增用户成功');
       }
 
       onSuccess();
     } catch (error: any) {
       if (!error.errorFields) {
-        const errorMsg =
-          error.response?.data?.message ||
-          `${isEdit ? "编辑" : "新增"}用户失败`;
+        const errorMsg = error.response?.data?.message || `${isEdit ? '编辑' : '新增'}用户失败`;
         message.error(errorMsg);
       }
     } finally {
@@ -154,27 +147,28 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
           label="账号"
           name="account"
           rules={[
-            { max: 20, message: "账号最多20个字符" },
-            { message: "请输入账号", required: !isEdit },
+            { max: 20, message: '账号最多20个字符' },
+            { message: '请输入账号', required: !isEdit }
           ]}
         >
-          <Input disabled={isEdit} placeholder="请输入账号" />
+          <Input
+            disabled={isEdit}
+            placeholder="请输入账号"
+          />
         </Form.Item>
 
         <Form.Item
           label="密码"
           name="password"
-          rules={[{ message: "请输入密码", required: !isEdit }]}
+          rules={[{ message: '请输入密码', required: !isEdit }]}
         >
-          <Input.Password
-            placeholder={isEdit ? "不修改请留空" : "请输入密码"}
-          />
+          <Input.Password placeholder={isEdit ? '不修改请留空' : '请输入密码'} />
         </Form.Item>
 
         <Form.Item
           label="昵称"
           name="nickname"
-          rules={[{ max: 20, message: "昵称最多20个字符" }]}
+          rules={[{ max: 20, message: '昵称最多20个字符' }]}
         >
           <Input placeholder="请输入昵称" />
         </Form.Item>
@@ -183,8 +177,8 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
           label="邮箱"
           name="email"
           rules={[
-            { message: "请输入有效的邮箱地址", type: "email" },
-            { max: 50, message: "邮箱最多50个字符" },
+            { message: '请输入有效的邮箱地址', type: 'email' },
+            { max: 50, message: '邮箱最多50个字符' }
           ]}
         >
           <Input placeholder="请输入邮箱" />
@@ -193,40 +187,43 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
         <Form.Item
           label="手机号"
           name="cellphone"
-          rules={[{ message: "请输入有效的手机号", pattern: /^1[0-9]{10}$/ }]}
+          rules={[{ message: '请输入有效的手机号', pattern: /^1[0-9]{10}$/ }]}
         >
           <Input placeholder="请输入手机号" />
         </Form.Item>
 
-        <Form.Item label="备注" name="remark">
-          <Input.TextArea placeholder="请输入备注" rows={2} />
+        <Form.Item
+          label="备注"
+          name="remark"
+        >
+          <Input.TextArea
+            placeholder="请输入备注"
+            rows={2}
+          />
         </Form.Item>
 
         <Form.Item
           label="角色"
           name="role_ids"
-          rules={[{ message: "请选择至少一个角色", required: true }]}
+          rules={[{ message: '请选择至少一个角色', required: true }]}
         >
           <Select
+            showSearch
             loading={roleLoading}
             mode="multiple"
             optionFilterProp="label"
             placeholder="请选择角色"
-            showSearch
             filterOption={(input, option) =>
-              (option?.label ?? "")
-                .toString()
-                .toLowerCase()
-                .includes(input.toLowerCase())
+              (option?.label ?? '').toString().toLowerCase().includes(input.toLowerCase())
             }
             notFoundContent={(() => {
-              if (roleLoading) return "加载中...";
-              if (!roleData?.list?.length) return "无可用角色";
-              return "未找到";
+              if (roleLoading) return '加载中...';
+              if (!roleData?.list?.length) return '无可用角色';
+              return '未找到';
             })()}
             options={roleData?.list?.map((role: Api.Role.Info) => ({
               label: role.name,
-              value: Number(role.id),
+              value: Number(role.id)
             }))}
           />
         </Form.Item>

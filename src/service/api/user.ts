@@ -1,11 +1,11 @@
-import { request } from "../request";
+import { request } from '../request';
 
 /** 新增用户接口 */
 export function fetchPostUser(data: Api.User.Info) {
   return request<null>({
     data,
-    method: "post",
-    url: "/user",
+    method: 'post',
+    url: '/user'
   });
 }
 
@@ -20,9 +20,9 @@ export function fetchPostUser(data: Api.User.Info) {
 /** 获取用户列表 */
 export function fetchGetUserList(params?: Api.SystemManage.UserSearchParams) {
   return request<Api.User.List>({
-    method: "get",
+    method: 'get',
     params,
-    url: "/user/list",
+    url: '/user/list'
   });
 }
 
@@ -30,31 +30,31 @@ export function fetchGetUserList(params?: Api.SystemManage.UserSearchParams) {
 export function fetchPutUser(id: string, data: Api.User.Info) {
   return request<null>({
     data, // 使用 data 而不是 params 发送请求体数据
-    method: "put",
-    url: `/user/${id}/update`,
+    method: 'put',
+    url: `/user/${id}/update`
   });
 }
 
 /** 启用用户接口 */
 export function fetchEnableUser(id: string) {
   return request<null>({
-    method: "put",
-    url: `/user/enable/${id}`,
+    method: 'put',
+    url: `/user/enable/${id}`
   });
 }
 
 /** 禁用用户接口 */
 export function fetchDisableUser(id: string) {
   return request<null>({
-    method: "put",
-    url: `/user/disable/${id}`,
+    method: 'put',
+    url: `/user/disable/${id}`
   });
 }
 
 /** 删除用户接口 */
 export function fetchDeleteUser(id: string) {
   return request<null>({
-    method: "delete",
-    url: `/user/delete/${id}`,
+    method: 'delete',
+    url: `/user/delete/${id}`
   });
 }

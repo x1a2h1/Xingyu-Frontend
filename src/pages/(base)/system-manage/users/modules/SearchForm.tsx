@@ -1,6 +1,7 @@
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Input, Row, Select, Space } from "antd";
-import React from "react";
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Input, Row, Select, Space } from 'antd';
+import type { Dayjs } from 'dayjs';
+import React from 'react';
 
 const { RangePicker } = DatePicker;
 
@@ -9,11 +10,15 @@ interface SearchFormProps {
   readonly handleReset: () => void;
   readonly handleSearch: () => void;
   readonly searchParams: {
-    dateRange: any[];
+    dateRange: [Dayjs | null, Dayjs | null] | null;
     keyword: string;
     status?: string;
   };
-  readonly setSearchParams: (params: any) => void;
+  readonly setSearchParams: (params: {
+    dateRange: [Dayjs | null, Dayjs | null] | null;
+    keyword: string;
+    status?: string;
+  }) => void;
 }
 
 export const SearchForm: React.FC<SearchFormProps> = ({
@@ -21,13 +26,13 @@ export const SearchForm: React.FC<SearchFormProps> = ({
   handleReset,
   handleSearch,
   searchParams,
-  setSearchParams,
+  setSearchParams
 }) => {
   return (
     <Space
       direction="vertical"
       size="middle"
-      style={{ marginBottom: 16, width: "100%" }}
+      style={{ marginBottom: 16, width: '100%' }}
     >
       <Row gutter={16}>
         <Col span={6}>
@@ -35,33 +40,27 @@ export const SearchForm: React.FC<SearchFormProps> = ({
             placeholder="请输入用户名/昵称"
             prefix={<SearchOutlined />}
             value={searchParams.keyword}
-            onChange={(e) =>
-              setSearchParams({ ...searchParams, keyword: e.target.value })
-            }
+            onChange={e => setSearchParams({ ...searchParams, keyword: e.target.value })}
           />
         </Col>
         <Col span={2}>
           <Select
             allowClear
             placeholder="请选择状态"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             value={searchParams.status}
             options={[
-              { label: "启用", value: "1" },
-              { label: "禁用", value: "2" },
+              { label: '启用', value: '1' },
+              { label: '禁用', value: '2' }
             ]}
-            onChange={(value) =>
-              setSearchParams({ ...searchParams, status: value })
-            }
+            onChange={value => setSearchParams({ ...searchParams, status: value })}
           />
         </Col>
         <Col span={8}>
           <RangePicker
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             value={searchParams.dateRange}
-            onChange={(dates) =>
-              setSearchParams({ ...searchParams, dateRange: dates })
-            }
+            onChange={dates => setSearchParams({ ...searchParams, dateRange: dates })}
           />
         </Col>
         <Col span={5}>
