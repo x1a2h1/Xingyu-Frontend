@@ -3,7 +3,7 @@ import { useLoading } from '@sa/hooks';
 import { globalConfig } from '@/config';
 import { getIsLogin, selectUserInfo } from '@/features/auth/authStore';
 import { usePreviousRoute, useRouter } from '@/features/router';
-import { fetchGetUserInfo, fetchLogin } from '@/service/api';
+import { fetchGetMyInfo as fetchGetUserInfo, fetchLogin } from '@/service/api';
 import { localStg } from '@/utils/storage';
 
 import { useCacheTabs } from '../tab/tabHooks';
@@ -22,10 +22,10 @@ export function useAuth() {
     }
 
     if (typeof codes === 'string') {
-      return userInfo.buttons.includes(codes);
+      return userInfo.menu_list?.some(menu => menu.symbol === codes);
     }
 
-    return codes.some(code => userInfo.buttons.includes(code));
+    return codes.some(code => userInfo.menu_list?.some(menu => menu.symbol === code));
   }
 
   return {
@@ -45,7 +45,6 @@ export function useInitAuth() {
   const { replace } = useRouter();
 
   const redirectUrl = searchParams.get('redirect');
-
   async function toLogin({ password, userName }: { password: string; userName: string }, redirect = true) {
     if (loading) return;
 
@@ -74,7 +73,7 @@ export function useInitAuth() {
         }
 
         window.$notification?.success({
-          description: t('page.login.common.welcomeBack', { userName: info.userName }),
+          description: t('page.login.common.welcomeBack', { userName: info.nickname }),
           message: t('page.login.common.loginSuccess')
         });
       }
@@ -82,7 +81,6 @@ export function useInitAuth() {
 
     endLoading();
   }
-
   return {
     loading,
     toLogin

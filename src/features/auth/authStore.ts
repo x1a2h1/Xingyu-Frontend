@@ -16,7 +16,7 @@ export const authSlice = createSlice({
     setToken: (state, { payload }: PayloadAction<string>) => {
       state.token = payload;
     },
-    setUserInfo: (state, { payload }: PayloadAction<Api.Auth.UserInfo>) => {
+    setUserInfo: (state, { payload }: PayloadAction<Api.User.Info>) => {
       state.userInfo = payload;
     }
   },
@@ -35,7 +35,8 @@ export const getIsLogin = createSelector([selectToken], token => Boolean(token))
 
 /** Is static super role */
 export const isStaticSuper = createSelector([selectUserInfo], userInfo => {
-  const { VITE_AUTH_ROUTE_MODE, VITE_STATIC_SUPER_ROLE } = import.meta.env;
+  const { VITE_AUTH_ROUTE_MODE } = import.meta.env;
 
-  return VITE_AUTH_ROUTE_MODE === 'static' && userInfo.roles.includes(VITE_STATIC_SUPER_ROLE);
+  // return VITE_AUTH_ROUTE_MODE === 'static' && userInfo.roles.includes(VITE_STATIC_SUPER_ROLE);
+  return VITE_AUTH_ROUTE_MODE === 'static' && userInfo.root;
 });

@@ -16,7 +16,7 @@ export async function initAuthRoutes(addRoutes: (parent: string | null, route: R
 
   const isSuper = isStaticSuper(store.getState());
 
-  const { roles } = selectUserInfo(store.getState());
+  const { role_list } = selectUserInfo(store.getState());
 
   // 静态模式
   if (authRouteMode === 'static') {
@@ -27,6 +27,7 @@ export async function initAuthRoutes(addRoutes: (parent: string | null, route: R
       });
     } else {
       // 非超级管理员
+      const roles: string[] = role_list ? role_list.map(role => role.name) : [];
       const filteredRoutes = filterAuthRoutesByRoles(reactAuthRoutes, roles);
 
       filteredRoutes.forEach(({ parent, route }) => {

@@ -87,7 +87,7 @@ const RootLayout = () => {
 
   const { i18nKey, title } = handle;
 
-  const { roles } = useAppSelector(selectUserInfo);
+  const { role_list } = useAppSelector(selectUserInfo);
 
   const isSuper = useAppSelector(isStaticSuper);
 
@@ -103,7 +103,7 @@ const RootLayout = () => {
 
   if (routeId.current !== id) {
     routeId.current = id;
-
+    const roles: string[] = role_list ? role_list.map(role => role.name) : [];
     location.current = createRouteGuard(route, roles, isSuper, previousRoute);
   }
 

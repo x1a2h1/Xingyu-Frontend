@@ -55,13 +55,7 @@ const ToggleAuth = () => {
 
   const roles: DescriptionsProps['items'] = [
     {
-      children: (
-        <ASpace>
-          {userInfo.roles.map(role => (
-            <ATag key={role}>{role}</ATag>
-          ))}
-        </ASpace>
-      ),
+      children: <ASpace>{userInfo.role_list?.map(role => <ATag key={role.id}>{role.name}</ATag>)}</ASpace>,
       key: '1',
       label: t('page.manage.user.userRole')
     },

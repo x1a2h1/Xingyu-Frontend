@@ -29,10 +29,7 @@ declare namespace Api {
       records: T[];
     }
 
-    type CommonSearchParams = Pick<
-      Common.PaginatingCommonParams,
-      "current" | "size"
-    >;
+    type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'current' | 'size'>;
 
     /**
      * enable status
@@ -40,7 +37,7 @@ declare namespace Api {
      * - "1": enabled
      * - "2": disabled
      */
-    type EnableStatus = "1" | "2";
+    type EnableStatus = '1' | '2';
 
     /** common record */
     type CommonRecord<T = any> = {
@@ -78,7 +75,7 @@ declare namespace Api {
     }
 
     type Info = {
-      token: LoginToken["token"];
+      token: LoginToken['token'];
       userInfo: UserInfo;
     };
   }
@@ -89,15 +86,14 @@ declare namespace Api {
    * backend api module: "route"
    */
   namespace Route {
-    type ElegantConstRoute =
-      import("@soybean-react/vite-plugin-react-router").ElegantConstRoute;
+    type ElegantConstRoute = import('@soybean-react/vite-plugin-react-router').ElegantConstRoute;
 
     interface MenuRoute extends ElegantConstRoute {
       id: string;
     }
 
     interface UserRoute {
-      home: import("@soybean-react/vite-plugin-react-router").LastLevelRouteKey;
+      home: import('@soybean-react/vite-plugin-react-router').LastLevelRouteKey;
       routes: string[];
     }
   }
@@ -108,10 +104,7 @@ declare namespace Api {
    * backend api module: "systemManage"
    */
   namespace SystemManage {
-    type CommonSearchParams = Pick<
-      Common.PaginatingCommonParams,
-      "current" | "size"
-    >;
+    type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'current' | 'size'>;
 
     /** role */
     type Role = Common.CommonRecord<{
@@ -125,15 +118,14 @@ declare namespace Api {
 
     /** role search params */
     type RoleSearchParams = CommonType.RecordNullable<
-      Pick<Api.SystemManage.Role, "roleCode" | "roleName" | "status"> &
-        CommonSearchParams
+      Pick<Api.SystemManage.Role, 'roleCode' | 'roleName' | 'status'> & CommonSearchParams
     >;
 
     /** role list */
     type RoleList = Common.PaginatingQueryRecord<Role>;
 
     /** all role */
-    type AllRole = Pick<Role, "id" | "roleCode" | "roleName">;
+    type AllRole = Pick<Role, 'id' | 'roleCode' | 'roleName'>;
 
     /**
      * user gender
@@ -141,7 +133,7 @@ declare namespace Api {
      * - "1": "male"
      * - "2": "female"
      */
-    type UserGender = "1" | "2";
+    type UserGender = '1' | '2';
 
     /** user */
     type User = Common.CommonRecord<{
@@ -161,15 +153,7 @@ declare namespace Api {
 
     /** user search params */
     type UserSearchParams = CommonType.RecordNullable<
-      Pick<
-        Api.SystemManage.User,
-        | "nickName"
-        | "status"
-        | "userEmail"
-        | "userGender"
-        | "userName"
-        | "userPhone"
-      > &
+      Pick<Api.SystemManage.User, 'nickName' | 'status' | 'userEmail' | 'userGender' | 'userName' | 'userPhone'> &
         CommonSearchParams
     >;
 
@@ -182,7 +166,7 @@ declare namespace Api {
      * - "1": directory
      * - "2": menu
      */
-    type MenuType = "1" | "2";
+    type MenuType = '1' | '2';
 
     type MenuButton = {
       /**
@@ -201,20 +185,20 @@ declare namespace Api {
      * - "1": iconify icon
      * - "2": local icon
      */
-    type IconType = "1" | "2";
+    type IconType = '1' | '2';
 
     type MenuPropsOfRoute = Pick<
-      import("@soybean-react/vite-plugin-react-router").RouteMeta,
-      | "activeMenu"
-      | "constant"
-      | "fixedIndexInTab"
-      | "hideInMenu"
-      | "href"
-      | "i18nKey"
-      | "keepAlive"
-      | "multiTab"
-      | "order"
-      | "query"
+      import('@soybean-react/vite-plugin-react-router').RouteMeta,
+      | 'activeMenu'
+      | 'constant'
+      | 'fixedIndexInTab'
+      | 'hideInMenu'
+      | 'href'
+      | 'i18nKey'
+      | 'keepAlive'
+      | 'multiTab'
+      | 'order'
+      | 'query'
     >;
 
     type Menu = Common.CommonRecord<{
@@ -321,10 +305,10 @@ declare namespace Api {
       account: string;
       cellphone: string;
       email: string;
-      menu_list: any[] | null;
+      menu_list: Menu.Info[] | null;
       nickname: string;
       remark: string;
-      role_list: any[] | null;
+      role_list: Role.Info[] | null;
       root: boolean;
       status: number;
     };
@@ -366,6 +350,105 @@ declare namespace Api {
       sort_num: number;
       symbol: string;
       url: string;
+    };
+    type List = Common.PageableData<Info>;
+  }
+  // ECPM
+  namespace ECPM {
+    type ECPMEntry = {
+      /** 广告类型：信息流、开屏、激励视频、新插屏 */
+      ad_type: string;
+      /** 竞价方式：目标｜实时竞价 */
+      bid_type: string;
+      /** eCPM值，默认值为1 */
+      ecpm: number;
+    };
+
+    type Info = Base & {
+      ECPMEntry: ECPMEntry[];
+    };
+    type List = Common.PageableData<Info>;
+  }
+  // 渠道
+  namespace Channel {
+    type Info = Base & {
+      channel_name: string;
+      channel_no: string;
+      status: number;
+    };
+    type Options = {
+      greeter_login: boolean;
+      qq_login: boolean;
+      wechat_login: boolean;
+    };
+    type List = Common.PageableData<Info>;
+  }
+  // 应用渠道
+  namespace AppChan {
+    type Info = Base & {
+      app_id: number;
+      app_name: string;
+      channel_id: number;
+      channel_name: string;
+      status: number;
+    };
+    type List = Common.PageableData<Info>;
+  }
+  // 玩家
+  namespace Player {
+    type Info = Base & {
+      account: string;
+      app_id: number;
+      app_name: string;
+      channel_id: number;
+      channel_name: string;
+      entity_id: number;
+      entity_name: string;
+      status: number;
+    };
+    type List = Common.PageableData<Info>;
+  }
+  // 提现
+  namespace Withdrawal {
+    // 提现记录表
+    type WithdrawalStatus =
+      | 'approved' // 待审批
+      | 'failed' // 已审批
+      | 'paid' // 打款中
+      | 'pending' // 已完成
+      | 'processing' // 已拒绝
+      | 'rejected'; // 打款失败
+
+    type Info = Base & {
+      amount: string;
+      app_chan_id: number;
+      app_chan_name?: string; // 支付宝资金流水号
+
+      app_id: number;
+      app_name?: string;
+      entity_id: number;
+      entity_name?: string; // 提现金额(单位:厘)
+      identity: string;
+      operator_id?: number;
+      operator_name?: string;
+      operator_remarks?: string;
+      // 提现状态
+      out_biz_no: string;
+      // 支付宝转账订单号
+      pay_fund_order_id: string;
+      // 业务订单号
+      payment_order_id: string;
+      // 真实姓名
+      platform: string;
+
+      processed_at?: number;
+      // 身份证号/支付宝账号
+      real_name: string;
+      remarks?: string;
+      // 支付平台(alipay,wechatpay)
+      status: WithdrawalStatus;
+
+      uid: string;
     };
     type List = Common.PageableData<Info>;
   }

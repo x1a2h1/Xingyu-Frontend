@@ -39,7 +39,9 @@ declare namespace StorageType {
     themeSettings: App.Theme.ThemeSetting;
     /** The token */
     token: string;
+    /** The is New user info */
+    userInfo: Api.User.Info;
     /** The user info */
-    userInfo: Api.Auth.UserInfo;
+    // userInfo: Api.Auth.UserInfo;
   }
 }
