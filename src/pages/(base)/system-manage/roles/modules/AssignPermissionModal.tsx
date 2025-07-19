@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { Modal, Tree } from 'antd';
+import PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
 
-import { Modal, Tree } from "antd";
-
-import { fetchMenuTree } from "@/service/api/menu";
+import { fetchMenuTree } from '@/service/api/menu';
 
 interface AssignPermissionModalProps {
   defaultCheckedKeys?: number[];
@@ -15,43 +15,36 @@ export const AssignPermissionModal: React.FC<AssignPermissionModalProps> = ({
   defaultCheckedKeys = [],
   onCancel,
   onOk,
-  open,
+  open
 }) => {
-  const [selectedKeys, setSelectedKeys] =
-    useState<number[]>(defaultCheckedKeys);
+  const [selectedKeys, setSelectedKeys] = useState<number[]>(defaultCheckedKeys);
   const [menuTree, setMenuTree] = useState<Api.Menu.Tree[]>([]);
-  const [loading, setLoading] = useState(false);
+
+  const loadMenuTree = useCallback(async () => {
+    try {
+      const res = await fetchMenuTree();
+      if (res.data) {
+        setMenuTree(res.data);
+      }
+    } catch {
+      // 加载菜单树失败，静默处理
+    }
+  }, []);
 
   useEffect(() => {
     if (open) {
       loadMenuTree();
       setSelectedKeys(defaultCheckedKeys);
     }
-  }, [open, defaultCheckedKeys]);
-
-  const loadMenuTree = async () => {
-    try {
-      setLoading(true);
-      const res = await fetchMenuTree();
-      if (res.data) {
-        setMenuTree(res.data);
-      }
-    } catch (error) {
-      console.error("加载菜单树失败:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [open, defaultCheckedKeys, loadMenuTree]);
 
   const handleOk = () => {
     onOk(selectedKeys);
   };
 
-  const handleCheck = (
-    checked: string[] | { checked: string[]; halfChecked: string[] },
-  ) => {
+  const handleCheck = (checked: React.Key[] | { checked: React.Key[]; halfChecked: React.Key[] }) => {
     const checkedKeys = Array.isArray(checked) ? checked : checked.checked;
-    setSelectedKeys(checkedKeys.map((key) => Number(key)));
+    setSelectedKeys(checkedKeys.map(key => Number(key)));
   };
 
   return (
@@ -66,17 +59,23 @@ export const AssignPermissionModal: React.FC<AssignPermissionModalProps> = ({
     >
       <Tree
         checkable
-        checkedKeys={selectedKeys}
         defaultExpandAll
-        fieldNames={{
-          children: "children",
-          key: "id",
-          title: "name",
-        }}
-        loading={loading}
+        checkedKeys={selectedKeys}
         treeData={menuTree}
+        fieldNames={{
+          children: 'children',
+          key: 'id',
+          title: 'name'
+        }}
         onCheck={handleCheck}
       />
     </Modal>
   );
+};
+
+AssignPermissionModal.propTypes = {
+  defaultCheckedKeys: PropTypes.arrayOf(PropTypes.number),
+  onCancel: PropTypes.func.isRequired,
+  onOk: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired
 };

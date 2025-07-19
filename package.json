@@ -89,6 +89,7 @@
     "@types/lodash-es": "4.17.12",
     "@types/node": "22.13.5",
     "@types/nprogress": "0.2.3",
+    "@types/prop-types": "^15.7.15",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
     "@types/react-transition-group": "4.4.12",
@@ -122,7 +123,6 @@
     "vite-plugin-remove-console": "2.2.0",
     "vite-plugin-svg-icons": "2.0.1"
   },
-
   "lint-staged": {
     "*": "eslint --fix"
   },
