@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
-import { Input } from "antd";
+import { Input } from 'antd';
+import { useMemo, useState } from 'react';
 
-import { ICON_LIST } from "../constants";
+import { ICON_LIST } from '../constants';
 
 interface IconModalProps {
   isModalOpen: boolean;
@@ -9,30 +9,24 @@ interface IconModalProps {
   setIsModalOpen: (open: boolean) => void;
 }
 
-export const IconModal = ({
-  isModalOpen,
-  setIcon,
-  setIsModalOpen,
-}: IconModalProps) => {
-  const [searchValue, setSearchValue] = useState("");
+export const IconModal = ({ isModalOpen, setIcon, setIsModalOpen }: IconModalProps) => {
+  const [searchValue, setSearchValue] = useState('');
 
   // 过滤图标列表
   const filteredIcons = useMemo(() => {
     if (!searchValue) return ICON_LIST;
-    return ICON_LIST.filter((icon: string) =>
-      icon.toLowerCase().includes(searchValue.toLowerCase()),
-    );
+    return ICON_LIST.filter((icon: string) => icon.toLowerCase().includes(searchValue.toLowerCase()));
   }, [searchValue]);
 
   const handleIconSelect = (icon: string) => {
     setIcon(icon);
     setIsModalOpen(false);
-    setSearchValue(""); // 重置搜索
+    setSearchValue(''); // 重置搜索
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    setSearchValue(""); // 重置搜索
+    setSearchValue(''); // 重置搜索
   };
 
   return (
@@ -48,7 +42,7 @@ export const IconModal = ({
           allowClear
           placeholder="搜索图标..."
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={e => setSearchValue(e.target.value)}
         />
       </div>
 
@@ -56,7 +50,7 @@ export const IconModal = ({
         <div className="grid grid-cols-8 gap-2">
           {filteredIcons.map((icon: string) => (
             <div
-              className="flex h-12 w-12 cursor-pointer flex-col items-center justify-center rounded-lg border transition-all hover:border-blue-300 hover:bg-blue-50"
+              className="h-12 w-12 flex flex-col cursor-pointer items-center justify-center border rounded-lg transition-all hover:border-blue-300 hover:bg-blue-50"
               key={icon}
               title={icon}
               onClick={() => handleIconSelect(icon)}
@@ -66,9 +60,7 @@ export const IconModal = ({
           ))}
         </div>
 
-        {filteredIcons.length === 0 && (
-          <div className="py-8 text-center text-gray-500">未找到匹配的图标</div>
-        )}
+        {filteredIcons.length === 0 && <div className="py-8 text-center text-gray-500">未找到匹配的图标</div>}
       </div>
     </AModal>
   );
